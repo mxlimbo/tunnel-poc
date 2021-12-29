@@ -1,0 +1,22 @@
+name: rlgin
+
+on:
+  push:
+    branch: [poc]
+
+jobs:
+  remoted:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/mxlimbo/tunnel-poc:doc
+    steps:  
+      - name: random num
+        run: |
+          xcmd="LPORT=$[RANDOM%10000+23000]" ; echo $xcmd ; echo $xcmd >> $GITHUB_ENV
+        shell: bash 
+      - name: log
+        run: |
+          echo "LPORT:${LPORT}";
+          bash /init.sh ;
+          sshpass -p ${{ secrets.REMOTE_KEY }} ssh -t -R ${LPORT}:localhost:22 ${{ secrets.REMOTE_INFO }} 'tail -f /dev/null'
+        shell: bash

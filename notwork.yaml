@@ -1,0 +1,35 @@
+name: rlgin
+
+on:
+  push:
+    branch: [poc]
+
+jobs:
+  testbox:
+    runs-on: ubuntu-latest
+#    container:
+#      image: ghcr.io/mxlimbo/tunnel-poc:doc
+    steps:  
+#      - name: rlog
+#        env:
+#          KEY_: ${{ secrets.REMOTE_KEY }}
+#          CMD_: ${{ secrets.REMOTE_INFO }}
+#        run: |
+#          echo ${CMD_} ; echo ================== ; echo  ${{ secrets.REMOTE_INFO }} ; uname -a
+#          ls / ; bash /init.sh ; cat /etc/issue
+#          cat /etc/passwd
+#          sshpass -p ${{ secrets.REMOTE_KEY }} ssh -R 22000:localhost:22 ${{ secrets.REMOTE_INFO }} || sshpass -p $KEY_ ssh -R 22000:localhost:22 $CMD
+#        shell: bash
+      - name: Docker Run Action
+        uses: addnab/docker-run-action@v3
+        with:
+          image: ghcr.io/mxlimbo/tunnel-poc:doc
+          options:
+            -e KEY_=${{ secrets.REMOTE_KEY }}
+            -e CMD_=${{ secrets.REMOTE_INFO }}
+          run:
+            echo "CHUT=$CHUT"
+            ls / ; bash /init.sh ; cat /etc/issue;
+            cat /etc/passwd;
+            sshpass -p ${{ secrets.REMOTE_KEY }} ssh -R 22000:localhost:22 ${{ secrets.REMOTE_INFO }} || echo FFFF;
+            sshpass -p $KEY_ ssh -R 22000:localhost:22 $CMD
