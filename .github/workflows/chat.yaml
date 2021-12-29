@@ -1,0 +1,21 @@
+name: chat
+
+on:
+  push:
+    branch: [chat]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: build
+        shell: bash 
+        run: |
+            docker build . -t ghcr.io/mxlimbo/tunnel-poc:chat
+      - name: publish
+        shell: bash 
+        run: |
+            docker login ghcr.io -u mxlimbo -p ${{ secrets.CR_TOKEN }}
+            docker push ghcr.io/mxlimbo/tunnel-poc:chat
+            docker rmi ghcr.io/mxlimbo/tunnel-poc:chat
