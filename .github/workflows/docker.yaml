@@ -1,8 +1,8 @@
-name: CI
+name: docker 
 
 on:
   push:
-    branch: [mdoc]
+    branch: [docker]
 
 jobs:
   build:
@@ -12,7 +12,10 @@ jobs:
       - name: build
         shell: bash 
         run: |
-            docker build . -t ghcr.io/mxlimbo/tunnel-poc:doc
-            echo $secrets.CR_TOKEN | docker login ghcr.io -u mxlimbo --password-stdin
+            docker build . -t ghcr.io/mxlimbo/tunnel-poc:doc 
+      - name: publish
+        shell: bash 
+        run: |
+            docker login ghcr.io -u mxlimbo -p ${{ secrets.CR_TOKEN }}
             docker push ghcr.io/mxlimbo/tunnel-poc:doc
             docker rmi ghcr.io/mxlimbo/tunnel-poc:doc
