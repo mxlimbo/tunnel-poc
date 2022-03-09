@@ -2,20 +2,21 @@ name: chat
 
 on:
   push:
-    branch: [chat]
+    branch: [irc-chat]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: build
         shell: bash 
         run: |
-            docker build . -t ghcr.io/mxlimbo/tunnel-poc:chat
-      - name: publish
-        shell: bash 
-        run: |
-            docker login ghcr.io -u mxlimbo -p ${{ secrets.CR_TOKEN }}
-            docker push ghcr.io/mxlimbo/tunnel-poc:chat
-            docker rmi ghcr.io/mxlimbo/tunnel-poc:chat
+            docker buildx create --use
+            docker buildx build --platform=linux/amd64 .  -t ghcr.io/mxlimbo/irc:chat --push
