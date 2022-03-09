@@ -7,10 +7,10 @@ RUN  \
    && apt install -y wget unzip openssh-client \
    && echo $TARGETARCH \
    && if [ "$TARGETARCH" = "amd64" ] ; then TGT='amd64'; else TGT='arm64'; fi  \
-   && wget https://kiwiirc.com/downloads/kiwiirc_20.05.24.1_linux_$TARGETARCH.zip \
-   && unzip kiwiirc_20.05.24.1_linux_$TARGETARCH.zip \
-   && rm kiwiirc_20.05.24.1_linux_$TARGETARCH.zip \
-   && mv kiwiirc_linux_$TARGETARCH/ kiwiirc \
+   && wget https://kiwiirc.com/downloads/kiwiirc_20.05.24.1_linux_$TGT.zip \
+   && unzip kiwiirc_20.05.24.1_linux_$TGT.zip \
+   && rm kiwiirc_20.05.24.1_linux_$TGT.zip \
+   && mv kiwiirc_linux_$TGT/ kiwiirc \
    && cd kiwiirc \
    && mv config.conf.example config.conf \
    && sed -i 's/port = 80/port = 8080/g' config.conf \
