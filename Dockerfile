@@ -25,7 +25,7 @@ RUN  \
    && mv default.yaml ircd.yaml \
    && sed -i 's/"\[::1\]:6667":/#"\[::1\]:6667":/g' ircd.yaml \
    && chmod u+x ergo \
-   && ./ergo mkcerts \
+#   && ./ergo mkcerts \
    && cd /
 
 COPY run.sh .
