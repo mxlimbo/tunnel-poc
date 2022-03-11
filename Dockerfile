@@ -1,9 +1,11 @@
-FROM --platform=$BUILDPLATFORM alpine:3.15
+FROM --platform=$BUILDPLATFORM debian:10-slim
 
 ARG TARGETOS TARGETARCH
 
 RUN  \
-   if [ "$TARGETARCH" = "amd64" ] ; then TGT='amd64'; else TGT='arm64'; fi ; _KIWI_FILE_=kiwiirc_20.05.24.1_linux_$TGT  \
+   apt update \
+   && apt install -y wget unzip \
+   && if [ "$TARGETARCH" = "amd64" ] ; then TGT='amd64'; else TGT='arm64'; fi ; _KIWI_FILE_=kiwiirc_20.05.24.1_linux_$TGT  \
    && wget https://kiwiirc.com/downloads/$_KIWI_FILE_.zip \
    && unzip $_KIWI_FILE_.zip \
    && rm $_KIWI_FILE_.zip \
